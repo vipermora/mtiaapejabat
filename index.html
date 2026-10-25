@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>SISTEM PEJABAT MTIAA</title>
+  <meta name="theme-color" content="#0f766e">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="MTIAA">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px;
+      font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color: #1f2937;
+      background: linear-gradient(135deg, #0f766e, #134e4a); }
+    .card { width: 100%; max-width: 420px; background: #fff; border-radius: 16px; padding: 28px 22px; text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,.25); }
+    .card img { height: 140px; width: auto; }
+    h1 { font-size: 1.3rem; margin: 12px 0 4px; }
+    p { margin: 0 0 18px; color: #6b7280; font-size: .95rem; }
+    .btn { display: block; width: 100%; padding: 14px; border-radius: 10px; background: #0f766e; color: #fff;
+      font-weight: 700; font-size: 1.05rem; text-decoration: none; }
+    .btn:hover { background: #115e59; }
+    .tips { margin-top: 20px; text-align: left; font-size: .85rem; color: #4b5563; background: #f1f5f9; border-radius: 10px; padding: 12px 14px; }
+    .tips b { color: #115e59; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <img src="logo.png" alt="Logo MTIAA">
+    <h1>SISTEM PEJABAT</h1>
+    <p>Cuti · Aduan Baikpulih · Pengurusan Pejabat</p>
+    <a id="open" class="btn" href="#">Buka Sistem</a>
+
+    <div id="tips" class="tips">
+      <b>Pasang ikon di skrin utama:</b><br>
+      <span id="tipIos" class="hidden">iPhone/iPad (Safari): tekan butang <b>Share</b> &#x2191; kemudian <b>Add to Home Screen</b>.</span>
+      <span id="tipAndroid" class="hidden">Android (Chrome): tekan <b>&#8942;</b> kemudian <b>Add to Home screen</b> / <b>Install app</b>.</span>
+      <span id="tipDesktop" class="hidden">Laptop (Chrome/Edge): klik ikon <b>Install</b> di hujung bar alamat, atau <b>&#8942; &gt; Cast, save and share &gt; Install page as app</b>.</span>
+    </div>
+  </main>
+
+  <script>
+    // ====== TAMPAL WEB APP URL (berakhir dengan /exec) DI SINI ======
+    const WEB_APP_URL = 'https://script.google.com/a/macros/maahadalansar.edu.my/s/AKfycbxVQTKcte6shdkC-lQBlKS5hAqXDsbEQrodH6WlZaZX8MbwMGFdHNmIjuB40EeKLmiZ/exec';
+    // ===============================================================
+
+    document.getElementById('open').href = WEB_APP_URL;
+
+    const ua = navigator.userAgent;
+    const isIos = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isAndroid = /Android/.test(ua);
+    document.getElementById(isIos ? 'tipIos' : isAndroid ? 'tipAndroid' : 'tipDesktop').classList.remove('hidden');
+
+    // Bila dibuka dari ikon skrin utama, terus ke sistem.
+    const standalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+    if (standalone && /^https:\/\//.test(WEB_APP_URL)) {
+      document.getElementById('tips').classList.add('hidden');
+      window.location.replace(WEB_APP_URL);
+    }
+
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+  </script>
+</body>
+</html>
